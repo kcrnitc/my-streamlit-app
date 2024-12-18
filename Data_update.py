@@ -1,10 +1,17 @@
 import subprocess
 import os
+import time
 
 def commit_and_push_changes(repo_path, commit_message="Update Streamlit app"):
     try:
         # Change the current working directory to the repository path
         os.chdir(repo_path)
+
+        # Check if there are any changes
+        result = subprocess.run(["git", "status", "--porcelain"], capture_output=True, text=True)
+        if not result.stdout.strip():
+            print("No changes detected. Waiting for changes...")
+            return
 
         # Add all changes
         subprocess.run(["git", "add", "."], check=True)
@@ -29,5 +36,10 @@ def commit_and_push_changes(repo_path, commit_message="Update Streamlit app"):
 # Specify the path to your Git repository
 repo_path = r"C:\Users\user\Desktop\Streamlit"
 
-# Call the function with the repository path and a commit message
-commit_and_push_changes(repo_path, "Update Streamlit app with latest changes")
+# Continuous loop to check for changes and commit/push repeatedly
+try:
+    while True:
+        commit_and_push_changes(repo_path, "Update Streamlit app with latest changes")
+        time.sleep(60)  # Check for changes every 60 seconds
+except KeyboardInterrupt:
+    print("Stopped by user.")
