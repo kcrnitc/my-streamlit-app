@@ -1,6 +1,7 @@
 import subprocess
 import os
 import time
+from datetime import datetime, timedelta
 
 def commit_and_push_changes(repo_path, commit_message="Update Streamlit app"):
     try:
@@ -10,7 +11,7 @@ def commit_and_push_changes(repo_path, commit_message="Update Streamlit app"):
         # Check if there are any changes
         result = subprocess.run(["git", "status", "--porcelain"], capture_output=True, text=True)
         if not result.stdout.strip():
-            print("No changes detected. Waiting for changes...")
+            print(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} - No changes detected. Waiting for changes...")
             return
 
         # Add all changes
@@ -25,7 +26,7 @@ def commit_and_push_changes(repo_path, commit_message="Update Streamlit app"):
         # Push the changes to the repository
         subprocess.run(["git", "push"], check=True)
 
-        print("Changes have been committed and pushed successfully!")
+        print(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} - Changes have been committed and pushed successfully!")
 
     except subprocess.CalledProcessError as e:
         print(f"Error: {e}")
@@ -36,10 +37,18 @@ def commit_and_push_changes(repo_path, commit_message="Update Streamlit app"):
 # Specify the path to your Git repository
 repo_path = r"C:\Users\user\Desktop\Streamlit"
 
-# Continuous loop to check for changes and commit/push repeatedly
+# Duration to run the script (in seconds)
+run_duration = 3600  # 1 hour
+
+# Continuous loop to check for changes and commit/push repeatedly within the time period
+start_time = datetime.now()
+end_time = start_time + timedelta(seconds=run_duration)
+
 try:
-    while True:
+    while datetime.now() < end_time:
         commit_and_push_changes(repo_path, "Update Streamlit app with latest changes")
         time.sleep(60)  # Check for changes every 60 seconds
+
+    print(f"Script finished after running for {run_duration // 60} minutes.")
 except KeyboardInterrupt:
     print("Stopped by user.")
