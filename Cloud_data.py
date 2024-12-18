@@ -641,7 +641,7 @@ class DataDisplay(QWidget):
 
     def log_to_excel(self, avg_current, avg_voltage, avg_discharge):
         # Define the Excel file name
-        file_name = "EDM_DATA.xlsx"
+        file_name = "data/EDM_DATA.xlsx"
 
         # Check if the file already exists
         if not os.path.exists(file_name):
