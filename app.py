@@ -6,7 +6,7 @@ import os
 st.title("Excel Data Viewer")
 
 # Filepath to the Excel file
-EXCEL_FILE = "EDM_DATA.xlsx"
+EXCEL_FILE = "data/EDM_DATA.xlsx"
 
 # Check if the file exists
 if not os.path.exists(EXCEL_FILE):
