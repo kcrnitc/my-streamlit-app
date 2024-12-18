@@ -12,6 +12,9 @@ def commit_and_push_changes(repo_path, commit_message="Update Streamlit app"):
         # Commit the changes with a message
         subprocess.run(["git", "commit", "-m", commit_message], check=True)
 
+        # Pull the latest changes from the remote repository to avoid conflicts
+        subprocess.run(["git", "pull", "--rebase"], check=True)
+
         # Push the changes to the repository
         subprocess.run(["git", "push"], check=True)
 
